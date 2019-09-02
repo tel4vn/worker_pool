@@ -77,8 +77,7 @@ handle_cast({M, F, A}, State) ->
     _ ->
       {noreply, State, hibernate}
   catch
-    _:Error:Stacktrace ->
-      log_error(M, F, A, Error, Stacktrace),
+    _:_Error ->
       {noreply, State, hibernate}
   end;
 handle_cast(Cast, State) ->
@@ -94,8 +93,7 @@ handle_call({M, F, A}, _From, State) ->
     R ->
       {reply, {ok, R}, State, hibernate}
   catch
-    _:Error:Stacktrace ->
-      log_error(M, F, A, Error, Stacktrace),
+    _:Error ->
       {reply, {error, Error}, State, hibernate}
   end;
 handle_call(Call, _From, State) ->
